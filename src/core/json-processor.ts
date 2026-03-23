@@ -30,6 +30,13 @@ export class JsonProcessor {
      * Process text with the specified operation
      */
     process(text: string, operation: JsonOperation): ProcessResult {
+        return this.processWithIndent(text, operation, 0);
+    }
+
+    /**
+     * Process text with context-aware indentation for nested values
+     */
+    processWithIndent(text: string, operation: JsonOperation, contextIndent: number = 0): ProcessResult {
         text = text.trim();
         const warnings: string[] = [];
         
@@ -38,7 +45,7 @@ export class JsonProcessor {
             
             switch (operation) {
                 case 'beauty':
-                    result = this.beauty(text, warnings);
+                    result = this.beautyWithIndent(text, warnings, contextIndent);
                     break;
                 case 'ugly':
                     result = this.ugly(text, warnings);
@@ -79,15 +86,29 @@ export class JsonProcessor {
      * Format JSON with indentation (beautify)
      */
     private beauty(text: string, warnings: string[]): string {
+        return this.beautyWithIndent(text, warnings, 0);
+    }
+
+    /**
+     * Format JSON with context-aware indentation for nested values
+     */
+    private beautyWithIndent(text: string, warnings: string[], contextIndent: number): string {
         try {
             // Try standard JSON parse first
             const parsed = JSON.parse(text);
+            if (contextIndent > 0) {
+                // For nested values, start indentation from the context level
+                return this.lenientStringify(parsed, contextIndent);
+            }
             return JSON.stringify(parsed, null, this.indentSize);
         } catch (error) {
             // If standard parse fails, try lenient parse
             const result = this.lenientParse(text);
             if (result.warnings.length > 0) {
                 warnings.push(...result.warnings);
+            }
+            if (contextIndent > 0) {
+                return this.lenientStringify(result.data, contextIndent);
             }
             return this.lenientStringify(result.data, this.indentSize);
         }

@@ -24,8 +24,11 @@ export class NestedHandler {
         const keyValueInfo = this.extractKeyValue(fullText, offset, selectedText.trim());
         
         if (keyValueInfo) {
-            // Process the value
-            const result = this.jsonProcessor.process(keyValueInfo.value, operation);
+            // Calculate the indentation at this position
+            const contextIndent = this.calculateContextIndent(fullText, keyValueInfo.valueStart);
+            
+            // Process the value with context-aware indentation
+            const result = this.jsonProcessor.processWithIndent(keyValueInfo.value, operation, contextIndent);
             
             if (result.success && result.data) {
                 return {
@@ -48,6 +51,31 @@ export class NestedHandler {
             ...this.jsonProcessor.process(selectedText, operation),
             isKeyValue: false
         };
+    }
+
+    /**
+     * Calculate the indentation level at a given position in the document
+     */
+    private calculateContextIndent(text: string, valueStart: number): number {
+        // Find the beginning of the current line
+        let lineStart = valueStart;
+        while (lineStart > 0 && text[lineStart - 1] !== '\n') {
+            lineStart--;
+        }
+        
+        // Count leading whitespace
+        let indent = 0;
+        for (let i = lineStart; i < valueStart; i++) {
+            if (text[i] === ' ') {
+                indent++;
+            } else if (text[i] === '\t') {
+                indent += 4; // Treat tab as 4 spaces
+            } else {
+                break;
+            }
+        }
+        
+        return indent;
     }
 
     /**
