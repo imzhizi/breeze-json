@@ -227,6 +227,13 @@ export class JsonProcessor {
      * Stringify with support for numeric keys and other non-standard features
      */
     private lenientStringify(obj: any, indent: number): string {
+        return this.lenientStringifyHelper(obj, indent);
+    }
+
+    /**
+     * Helper for lenientStringify to track indentation levels
+     */
+    private lenientStringifyHelper(obj: any, indent: number): string {
         if (obj === null) {
             return 'null';
         }
@@ -255,19 +262,22 @@ export class JsonProcessor {
                 return '[]';
             }
             
-            const indentStr = indent > 0 ? ' '.repeat(indent) : '';
-            const nextIndent = indent > 0 ? indent + this.indentSize : 0;
-            const nextIndentStr = indent > 0 ? ' '.repeat(nextIndent) : '';
-            
-            const items = obj.map(item => 
-                nextIndentStr + this.lenientStringify(item, nextIndent)
-            );
-            
-            if (indent > 0) {
-                return '[\n' + items.join(',\n') + '\n' + indentStr + ']';
-            } else {
+            // If indent is 0, we're doing minify (no formatting)
+            if (indent === 0) {
+                const items = obj.map(item => this.lenientStringifyHelper(item, 0));
                 return '[' + items.join(',') + ']';
             }
+            
+            // Otherwise, we're doing pretty-print
+            const indentStr = ' '.repeat(indent);
+            const nextIndent = indent + this.indentSize;
+            const nextIndentStr = ' '.repeat(nextIndent);
+            
+            const items = obj.map(item => 
+                nextIndentStr + this.lenientStringifyHelper(item, nextIndent)
+            );
+            
+            return '[\n' + items.join(',\n') + '\n' + indentStr + ']';
         }
         
         if (typeof obj === 'object') {
@@ -276,30 +286,28 @@ export class JsonProcessor {
                 return '{}';
             }
             
-            const indentStr = indent > 0 ? ' '.repeat(indent) : '';
-            const nextIndent = indent > 0 ? indent + this.indentSize : 0;
-            const nextIndentStr = indent > 0 ? ' '.repeat(nextIndent) : '';
+            // If indent is 0, we're doing minify (no formatting)
+            if (indent === 0) {
+                const items = keys.map(key => {
+                    const keyStr = JSON.stringify(key);
+                    const valueStr = this.lenientStringifyHelper(obj[key], 0);
+                    return `${keyStr}:${valueStr}`;
+                });
+                return '{' + items.join(',') + '}';
+            }
+            
+            // Otherwise, we're doing pretty-print
+            const indentStr = ' '.repeat(indent);
+            const nextIndent = indent + this.indentSize;
+            const nextIndentStr = ' '.repeat(nextIndent);
             
             const items = keys.map(key => {
-                // Always quote keys for valid JSON output
-                // But handle numeric keys specially
-                let keyStr: string;
-                if (/^\d+$/.test(key)) {
-                    // Numeric key - quote it for JSON compatibility
-                    keyStr = JSON.stringify(key);
-                } else {
-                    keyStr = JSON.stringify(key);
-                }
-                
-                const valueStr = this.lenientStringify(obj[key], nextIndent);
+                const keyStr = JSON.stringify(key);
+                const valueStr = this.lenientStringifyHelper(obj[key], nextIndent);
                 return `${nextIndentStr}${keyStr}: ${valueStr}`;
             });
             
-            if (indent > 0) {
-                return '{\n' + items.join(',\n') + '\n' + indentStr + '}';
-            } else {
-                return '{' + items.join(',') + '}';
-            }
+            return '{\n' + items.join(',\n') + '\n' + indentStr + '}';
         }
         
         // Fallback for other types (function, symbol, etc.)

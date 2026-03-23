@@ -81,48 +81,48 @@
       ],
       "breezeJson.menu": [
         {
-          "command": "breezeJson.beauty",
-          "group": "1_basic@1"
-        },
-        {
-          "command": "breezeJson.ugly",
-          "group": "1_basic@2"
-        },
-        {
-          "command": "breezeJson.escape",
-          "group": "1_basic@3"
-        },
-        {
-          "command": "breezeJson.unescape",
-          "group": "1_basic@4"
-        },
-        {
-          "command": "breezeJson.urlencode",
-          "group": "1_basic@5"
-        },
-        {
-          "command": "breezeJson.urldecode",
-          "group": "1_basic@6"
-        },
-        {
           "command": "breezeJson.beautySelected",
-          "group": "2_selected@1",
+          "group": "1_selected@1",
           "when": "editorHasSelection"
         },
         {
           "command": "breezeJson.uglySelected",
-          "group": "2_selected@2",
+          "group": "1_selected@2",
           "when": "editorHasSelection"
         },
         {
           "command": "breezeJson.escapeSelected",
-          "group": "2_selected@3",
+          "group": "1_selected@3",
           "when": "editorHasSelection"
         },
         {
           "command": "breezeJson.unescapeSelected",
-          "group": "2_selected@4",
+          "group": "1_selected@4",
           "when": "editorHasSelection"
+        },
+        {
+          "command": "breezeJson.beauty",
+          "group": "2_basic@1"
+        },
+        {
+          "command": "breezeJson.ugly",
+          "group": "2_basic@2"
+        },
+        {
+          "command": "breezeJson.escape",
+          "group": "2_basic@3"
+        },
+        {
+          "command": "breezeJson.unescape",
+          "group": "2_basic@4"
+        },
+        {
+          "command": "breezeJson.urlencode",
+          "group": "2_basic@5"
+        },
+        {
+          "command": "breezeJson.urldecode",
+          "group": "2_basic@6"
         }
       ]
     },
