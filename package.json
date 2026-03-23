@@ -2,7 +2,7 @@
   "name": "breeze-json",
   "displayName": "Breeze JSON",
   "description": "High-performance JSON formatter with beauty, ugly, escape, unescape, urlencode, urldecode operations and nested JSON support",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "imzhizi",
   "icon": "icon.png",
   "engines": {
