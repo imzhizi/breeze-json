@@ -1,0 +1,17 @@
+{
+  "name": "breeze-json-test",
+  "version": "1.0.0",
+  "normalObject": {
+    "key1": "value1",
+    "key2": 123,
+    "key3": true
+  },
+  "nestedJson": "{\"inner\":\"value\",\"number\":456}",
+  "escapedString": "Line1\\nLine2\\nLine3",
+  "urlEncoded": "%7B%22test%22%3A%22value%22%7D",
+  "numericKeyObject": {
+    "123": "numeric key test",
+    "456": "another numeric key"
+  },
+  "array": [1, 2, 3, {"nested": "in array"}]
+}

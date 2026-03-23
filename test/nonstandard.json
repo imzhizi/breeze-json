@@ -1,0 +1,7 @@
+{
+  "123": "fastjson style numeric key",
+  "456": {
+    "nested": "object with numeric parent key"
+  },
+  "trailing": "comma test",
+}

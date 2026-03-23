@@ -1,0 +1,189 @@
+{
+  "name": "breeze-json",
+  "displayName": "Breeze JSON",
+  "description": "High-performance JSON formatter with beauty, ugly, escape, unescape, urlencode, urldecode operations and nested JSON support",
+  "version": "0.1.0",
+  "publisher": "imzhizi",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:breezeJson.beauty",
+    "onCommand:breezeJson.ugly",
+    "onCommand:breezeJson.escape",
+    "onCommand:breezeJson.unescape",
+    "onCommand:breezeJson.urlencode",
+    "onCommand:breezeJson.urldecode",
+    "onCommand:breezeJson.beautySelected",
+    "onCommand:breezeJson.uglySelected",
+    "onCommand:breezeJson.escapeSelected",
+    "onCommand:breezeJson.unescapeSelected"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "breezeJson.quickPick",
+        "title": "Breeze JSON: Quick Pick Operation"
+      },
+      {
+        "command": "breezeJson.beauty",
+        "title": "Breeze JSON: Beauty (Format)"
+      },
+      {
+        "command": "breezeJson.ugly",
+        "title": "Breeze JSON: Ugly (Minify)"
+      },
+      {
+        "command": "breezeJson.escape",
+        "title": "Breeze JSON: Escape"
+      },
+      {
+        "command": "breezeJson.unescape",
+        "title": "Breeze JSON: Unescape"
+      },
+      {
+        "command": "breezeJson.urlencode",
+        "title": "Breeze JSON: URL Encode"
+      },
+      {
+        "command": "breezeJson.urldecode",
+        "title": "Breeze JSON: URL Decode"
+      },
+      {
+        "command": "breezeJson.beautySelected",
+        "title": "Breeze JSON: Beauty Selected Value"
+      },
+      {
+        "command": "breezeJson.uglySelected",
+        "title": "Breeze JSON: Ugly Selected Value"
+      },
+      {
+        "command": "breezeJson.escapeSelected",
+        "title": "Breeze JSON: Escape Selected Value"
+      },
+      {
+        "command": "breezeJson.unescapeSelected",
+        "title": "Breeze JSON: Unescape Selected Value"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "breezeJson.menu",
+          "group": "breezeJson@1"
+        }
+      ],
+      "breezeJson.menu": [
+        {
+          "command": "breezeJson.beauty",
+          "group": "1_basic@1"
+        },
+        {
+          "command": "breezeJson.ugly",
+          "group": "1_basic@2"
+        },
+        {
+          "command": "breezeJson.escape",
+          "group": "1_basic@3"
+        },
+        {
+          "command": "breezeJson.unescape",
+          "group": "1_basic@4"
+        },
+        {
+          "command": "breezeJson.urlencode",
+          "group": "1_basic@5"
+        },
+        {
+          "command": "breezeJson.urldecode",
+          "group": "1_basic@6"
+        },
+        {
+          "command": "breezeJson.beautySelected",
+          "group": "2_selected@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "breezeJson.uglySelected",
+          "group": "2_selected@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "breezeJson.escapeSelected",
+          "group": "2_selected@3",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "breezeJson.unescapeSelected",
+          "group": "2_selected@4",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "breezeJson.menu",
+        "label": "JSON Format"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "breezeJson.beauty",
+        "key": "ctrl+shift+f j b",
+        "mac": "cmd+shift+f j b"
+      },
+      {
+        "command": "breezeJson.ugly",
+        "key": "ctrl+shift+f j u",
+        "mac": "cmd+shift+f j u"
+      },
+      {
+        "command": "breezeJson.escape",
+        "key": "ctrl+shift+f j e",
+        "mac": "cmd+shift+f j e"
+      },
+      {
+        "command": "breezeJson.unescape",
+        "key": "ctrl+shift+f j n",
+        "mac": "cmd+shift+f j n"
+      }
+    ],
+    "configuration": {
+      "title": "Breeze JSON",
+      "properties": {
+        "breezeJson.indentSize": {
+          "type": "number",
+          "default": 2,
+          "description": "Indentation size for JSON beauty format"
+        },
+        "breezeJson.maxFileSizeMB": {
+          "type": "number",
+          "default": 10,
+          "description": "Maximum file size (in MB) before showing performance warning"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package --allow-missing-repository --out release"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4",
+    "@vscode/vsce": "^2.22.0"
+  }
+}
